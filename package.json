@@ -1,0 +1,18 @@
+{
+  "name": "jukebox",
+  "version": "1.0.0",
+  "description": "A Minecraft: BE server software written in TypeScript.",
+  "main": "start.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TSJukebox"
+  },
+  "author": "HerryYT",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.6.2"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "language-code" : "en",
+  "content" : {
+    "loading" : "Loading Jukebox...",
+    "language" : "Setting language to en (English)",
+    "starting-jukebox" : "Starting {{name}}, a Minecraft: Bedrock Edition server for version {{version}}",
+    "loading-properties" : "Loading server properties...",
+    "starting-server" : "Starting Minecraft: PE server on {{ip}}:{{port}}",
+    "loading-plugin" : "Loading {{plugin}}",
+    "enabling-plugin" : "Enabling {{plugin}}",
+    "server-info" : "This server is running {{name}} version {{version}} \"{{version-name}}\" (API {{api}})",
+    "license" : "Jukebox is distributed under the GPLv3 License",
+    "done" : "Done ({{time}} ms)!"
+  }
+}
