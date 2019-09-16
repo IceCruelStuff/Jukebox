@@ -9,6 +9,7 @@ import {SetLocalPlayerAsInitializedPacket} from "./SetLocalPlayerAsInitializedPa
 import {LevelChunkPacket} from "./LevelChunkPacket";
 import {RequestChunkRadiusPacket} from "./RequestChunkRadiusPacket";
 import {ChunkRadiusUpdatedPacket} from "./ChunkRadiusUpdatedPacket";
+import {TextPacket} from "./TextPacket";
 
 export class PacketPool {
 
@@ -42,5 +43,6 @@ export class PacketPool {
         this.registerPacket(LevelChunkPacket);
         this.registerPacket(RequestChunkRadiusPacket);
         this.registerPacket(ChunkRadiusUpdatedPacket);
+        this.registerPacket(TextPacket);
     }
 }

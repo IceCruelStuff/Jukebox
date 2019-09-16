@@ -1,7 +1,7 @@
 import {Permissible} from "../permission/Permissible";
 import {JukeboxServer} from "../JukeboxServer";
 
-export interface CommandSender  extends Permissible{
+export interface CommandSender extends Permissible{
 
     /**
      * @param message {string}

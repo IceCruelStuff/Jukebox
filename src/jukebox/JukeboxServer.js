@@ -147,6 +147,13 @@ class JukeboxServer {
     onPlayerLogin(player) {
         this.loggedInPlayers.addPlayer(player.getLowerCaseName(), player); //todo unique ids
     }
+    getOnlinePlayers() {
+        return Array.from(this.playerList.values());
+    }
+    broadcastMessage(message, recipients = this.getOnlinePlayers()) {
+        recipients.forEach(recipient => recipient.sendMessage(message));
+        return recipients.length;
+    }
     tick() {
         // let time = Date.now();
         // let tickTime = (Date.now() % 1000) / 1000;

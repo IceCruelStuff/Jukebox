@@ -1,6 +1,6 @@
 export class PlayerList extends Map {
 
-    addPlayer(id, player): void {
+    addPlayer(id, player){
         this.set(id, player);
     }
 

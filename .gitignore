@@ -9,3 +9,4 @@ coverage
 .idea/tasks.xml
 .idea/dictionaries/*.xml
 .idea/typescript-compiler.xml
+.idea/discord.xml

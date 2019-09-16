@@ -3,6 +3,7 @@ import {JukeboxServer} from "../JukeboxServer";
 import {RakNetAdapter} from "./RakNetAdapter";
 import {Async} from "../utils/Async";
 import {Chunk} from "../level/format/Chunk";
+import {TextPacket} from "./mcpe/protocol/TextPacket";
 
 export class PlayerSessionAdapter {
 
@@ -60,6 +61,14 @@ export class PlayerSessionAdapter {
     }
 
     handleStartGame(packet){
+        return false;
+    }
+
+    handleText(packet: TextPacket): boolean{
+        if (packet.type === TextPacket.TYPE_CHAT){
+            return this.player.chat(packet.message);
+        }
+
         return false;
     }
 

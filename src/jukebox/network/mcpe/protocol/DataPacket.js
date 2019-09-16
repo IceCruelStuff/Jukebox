@@ -55,7 +55,6 @@ class DataPacket extends NetworkBinaryStream_1.NetworkBinaryStream {
         return this.buffer;
     }
     handle(session) {
-        console.log("wtf");
         return false;
     }
 }

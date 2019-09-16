@@ -19,6 +19,7 @@ import {Vector3} from "./math/Vector3";
 import {StartGamePacket} from "./network/mcpe/protocol/StartGamePacket";
 import {LevelChunkPacket} from "./network/mcpe/protocol/LevelChunkPacket";
 import {ChunkRadiusUpdatedPacket} from "./network/mcpe/protocol/ChunkRadiusUpdatedPacket";
+import {TextPacket} from "./network/mcpe/protocol/TextPacket";
 
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
@@ -370,6 +371,32 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         this.dataPacket(pk);
     }
 
+    chat(message: string): boolean{
+        //TODO: if is alive.
+        if (!this.spawned){
+            return false;
+        }
+
+        message = TextFormat.clean(message, this.removeFormat);
+        message.split("\n").forEach(messagePart => {
+            if (messagePart.trim() !== "" && messagePart.length <= 255 && this.messageCounter-- > 0){
+                if (messagePart.startsWith("./")){
+                    messagePart = messagePart.substr(1);
+                }
+
+                //TODO: call PlayerCommandPreprocessEvent
+
+                if (messagePart.startsWith("/")){
+                    //TODO: dispatch command
+                }else {
+                    let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
+                    this.server.getLogger().info(msg);
+                    this.server.broadcastMessage(msg);
+                }
+            }
+        });
+    }
+
     kick(reason = "", isAdmin = true): boolean{
         let message;
         if(isAdmin){
@@ -671,7 +698,10 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
     }
 
     sendMessage(message: string) {
-        //TODO
+        let pk = new TextPacket();
+        pk.type = TextPacket.TYPE_RAW;
+        pk.message = message;
+        this.dataPacket(pk);
     }
 
     getServer(): JukeboxServer {

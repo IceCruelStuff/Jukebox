@@ -196,10 +196,10 @@ class SessionManager {
                 this.getLogger().debug("Ignored non-connected message for " + session + " due to session already opened");
             }
             else {
-                if ((packetId & BitFlags_1.BitFlags.ACK) === 1) {
+                if (packetId & BitFlags_1.BitFlags.ACK) {
                     session.handlePacket(new ACK_1.ACK(stream));
                 }
-                else if ((packetId & BitFlags_1.BitFlags.NAK) === 1) {
+                else if (packetId & BitFlags_1.BitFlags.NAK) {
                     session.handlePacket(new NACK_1.NACK(stream));
                 }
                 else {

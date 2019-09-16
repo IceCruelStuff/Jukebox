@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Async_1 = require("../utils/Async");
 const Chunk_1 = require("../level/format/Chunk");
+const TextPacket_1 = require("./mcpe/protocol/TextPacket");
 class PlayerSessionAdapter {
     constructor(player) {
         this.server = player.getServer();
@@ -41,6 +42,12 @@ class PlayerSessionAdapter {
         return false;
     }
     handleStartGame(packet) {
+        return false;
+    }
+    handleText(packet) {
+        if (packet.type === TextPacket_1.TextPacket.TYPE_CHAT) {
+            return this.player.chat(packet.message);
+        }
         return false;
     }
     handleSetLocalPlayerAsInitialized(packet) {
