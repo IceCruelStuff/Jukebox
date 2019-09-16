@@ -1,5 +1,5 @@
 @echo off
-title Jukebox: Minecraft Bedrock Edition Server Software
+title JukeBox: Minecraft Bedrock Edition Server Software
 set loop=false
 set /A "loops=1"
 
@@ -10,7 +10,7 @@ pause>nul & exit
 )
 
 :startScript
-node .\src\jukebox\Jukebox.js
+node .\start.js
 if /i "%loop%"=="true" (
     set /A "loops=loops + 1"
     echo Restarted %loops% time^(s^)
