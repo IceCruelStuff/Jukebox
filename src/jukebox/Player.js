@@ -14,6 +14,7 @@ const Vector3_1 = require("./math/Vector3");
 const StartGamePacket_1 = require("./network/mcpe/protocol/StartGamePacket");
 const LevelChunkPacket_1 = require("./network/mcpe/protocol/LevelChunkPacket");
 const ChunkRadiusUpdatedPacket_1 = require("./network/mcpe/protocol/ChunkRadiusUpdatedPacket");
+const TextPacket_1 = require("./network/mcpe/protocol/TextPacket");
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
  */
@@ -283,6 +284,29 @@ class Player extends Human_1.Human {
         pk.mustAccept = manager.resourcePacksRequired();
         this.dataPacket(pk);
     }
+    chat(message) {
+        //TODO: if is alive.
+        if (!this.spawned) {
+            return false;
+        }
+        message = TextFormat_1.TextFormat.clean(message, this.removeFormat);
+        message.split("\n").forEach(messagePart => {
+            if (messagePart.trim() !== "" && messagePart.length <= 255 && this.messageCounter-- > 0) {
+                if (messagePart.startsWith("./")) {
+                    messagePart = messagePart.substr(1);
+                }
+                //TODO: call PlayerCommandPreprocessEvent
+                if (messagePart.startsWith("/")) {
+                    //TODO: dispatch command
+                }
+                else {
+                    let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
+                    this.server.getLogger().info(msg);
+                    this.server.broadcastMessage(msg);
+                }
+            }
+        });
+    }
     kick(reason = "", isAdmin = true) {
         let message;
         if (isAdmin) {
@@ -522,7 +546,10 @@ class Player extends Human_1.Human {
         return this.sessionAdapter !== null;
     }
     sendMessage(message) {
-        //TODO
+        let pk = new TextPacket_1.TextPacket();
+        pk.type = TextPacket_1.TextPacket.TYPE_RAW;
+        pk.message = message;
+        this.dataPacket(pk);
     }
     getServer() {
         return this.server;

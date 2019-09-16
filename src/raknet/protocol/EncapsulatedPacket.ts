@@ -12,7 +12,7 @@ export class EncapsulatedPacket {
     public hasSplit: boolean = false;
 
     public messageIndex;
-    public sequenceIndex;
+    // public sequenceIndex;
 
     public orderIndex;
     public orderChannel;
@@ -21,12 +21,10 @@ export class EncapsulatedPacket {
     public splitID;
     public splitIndex;
 
-    // public stream = new BinaryStream();
-    public stream;
-    public lenght: number = 0;
+    public stream = new BinaryStream();
+    public length: number;
 
     public needACK: boolean = false;
-    public length: number;
 
     static fromBinary(stream){
         let packet = new EncapsulatedPacket();

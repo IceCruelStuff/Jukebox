@@ -1,6 +1,4 @@
 import {BinaryDataException} from './BinaryDataException'
-declare const Buffer;
-
 export class BinaryStream {
 
     public buffer: Buffer;
