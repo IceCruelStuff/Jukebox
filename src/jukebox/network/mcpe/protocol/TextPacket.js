@@ -64,6 +64,8 @@ class TextPacket extends DataPacket_1.DataPacket {
                 });
                 break;
         }
+        this.putString(this.xboxUserId);
+        this.putString(this.platformChatId);
     }
     handle(session) {
         return session.handleText(this);

@@ -72,7 +72,6 @@ export class DataPacket extends NetworkBinaryStream{
     }
 
     handle(session): boolean{
-        console.log("wtf");
         return false;
     }
 }

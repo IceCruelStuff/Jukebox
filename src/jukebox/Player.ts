@@ -19,6 +19,7 @@ import {Vector3} from "./math/Vector3";
 import {StartGamePacket} from "./network/mcpe/protocol/StartGamePacket";
 import {LevelChunkPacket} from "./network/mcpe/protocol/LevelChunkPacket";
 import {ChunkRadiusUpdatedPacket} from "./network/mcpe/protocol/ChunkRadiusUpdatedPacket";
+import {TextPacket} from "./network/mcpe/protocol/TextPacket";
 
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
@@ -697,7 +698,10 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
     }
 
     sendMessage(message: string) {
-        //TODO
+        let pk = new TextPacket();
+        pk.type = TextPacket.TYPE_RAW;
+        pk.message = message;
+        this.dataPacket(pk);
     }
 
     getServer(): JukeboxServer {

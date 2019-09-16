@@ -252,7 +252,7 @@ export class JukeboxServer {
         this.loggedInPlayers.addPlayer(player.getLowerCaseName(), player); //todo unique ids
     }
 
-    getOnlinePlayers(){
+    getOnlinePlayers(): Player[]{
         return Array.from(this.playerList.values());
     }
 

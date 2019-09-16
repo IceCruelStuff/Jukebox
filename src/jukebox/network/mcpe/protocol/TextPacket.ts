@@ -82,6 +82,9 @@ export class TextPacket extends DataPacket{
                 });
                 break;
         }
+
+        this.putString(this.xboxUserId);
+        this.putString(this.platformChatId);
     }
 
     handle(session): boolean {

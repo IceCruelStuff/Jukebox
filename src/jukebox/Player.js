@@ -14,6 +14,7 @@ const Vector3_1 = require("./math/Vector3");
 const StartGamePacket_1 = require("./network/mcpe/protocol/StartGamePacket");
 const LevelChunkPacket_1 = require("./network/mcpe/protocol/LevelChunkPacket");
 const ChunkRadiusUpdatedPacket_1 = require("./network/mcpe/protocol/ChunkRadiusUpdatedPacket");
+const TextPacket_1 = require("./network/mcpe/protocol/TextPacket");
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
  */
@@ -545,7 +546,10 @@ class Player extends Human_1.Human {
         return this.sessionAdapter !== null;
     }
     sendMessage(message) {
-        //TODO
+        let pk = new TextPacket_1.TextPacket();
+        pk.type = TextPacket_1.TextPacket.TYPE_RAW;
+        pk.message = message;
+        this.dataPacket(pk);
     }
     getServer() {
         return this.server;
