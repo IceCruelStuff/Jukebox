@@ -6,7 +6,7 @@ class EncapsulatedPacket {
     constructor() {
         this.reliability = 0;
         this.hasSplit = false;
-        this.lenght = 0;
+        this.stream = new BinaryStream_1.BinaryStream();
         this.needACK = false;
     }
     static fromBinary(stream) {

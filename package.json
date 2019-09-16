@@ -13,6 +13,8 @@
   "author": "HerryYT",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^3.6.2"
+    "typescript": "^3.6.2",
+    "time-stamp": "^2.2.0",
+    "adm-zip": "^0.4.13"
   }
 }

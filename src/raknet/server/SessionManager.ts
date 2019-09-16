@@ -230,7 +230,7 @@ export class SessionManager {
         });
     }
 
-    handle(packetId, stream, ip, port): void{
+    handle(packetId, stream, ip, port: number): void{
         let session = this.getSession(ip, port);
 
         this.getLogger().debug("got packet!" + stream);
@@ -253,9 +253,9 @@ export class SessionManager {
             if((packetId & BitFlags.VALID) === 0){
                 this.getLogger().debug("Ignored non-connected message for " + session + " due to session already opened");
             }else{
-                if((packetId & BitFlags.ACK) === 1){
+                if(packetId & BitFlags.ACK){
                     session.handlePacket(new ACK(stream));
-                }else if((packetId & BitFlags.NAK) === 1){
+                }else if(packetId & BitFlags.NAK){
                     session.handlePacket(new NACK(stream));
                 }else{
                     session.handlePacket(new Datagram(stream));

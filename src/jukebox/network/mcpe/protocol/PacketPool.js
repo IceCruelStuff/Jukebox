@@ -11,6 +11,7 @@ const SetLocalPlayerAsInitializedPacket_1 = require("./SetLocalPlayerAsInitializ
 const LevelChunkPacket_1 = require("./LevelChunkPacket");
 const RequestChunkRadiusPacket_1 = require("./RequestChunkRadiusPacket");
 const ChunkRadiusUpdatedPacket_1 = require("./ChunkRadiusUpdatedPacket");
+const TextPacket_1 = require("./TextPacket");
 class PacketPool {
     constructor() {
         this.packetPool = new Map();
@@ -37,6 +38,7 @@ class PacketPool {
         this.registerPacket(LevelChunkPacket_1.LevelChunkPacket);
         this.registerPacket(RequestChunkRadiusPacket_1.RequestChunkRadiusPacket);
         this.registerPacket(ChunkRadiusUpdatedPacket_1.ChunkRadiusUpdatedPacket);
+        this.registerPacket(TextPacket_1.TextPacket);
     }
 }
 exports.PacketPool = PacketPool;

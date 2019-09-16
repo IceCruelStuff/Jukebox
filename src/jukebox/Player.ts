@@ -370,6 +370,32 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         this.dataPacket(pk);
     }
 
+    chat(message: string): boolean{
+        //TODO: if is alive.
+        if (!this.spawned){
+            return false;
+        }
+
+        message = TextFormat.clean(message, this.removeFormat);
+        message.split("\n").forEach(messagePart => {
+            if (messagePart.trim() !== "" && messagePart.length <= 255 && this.messageCounter-- > 0){
+                if (messagePart.startsWith("./")){
+                    messagePart = messagePart.substr(1);
+                }
+
+                //TODO: call PlayerCommandPreprocessEvent
+
+                if (messagePart.startsWith("/")){
+                    //TODO: dispatch command
+                }else {
+                    let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
+                    this.server.getLogger().info(msg);
+                    this.server.broadcastMessage(msg);
+                }
+            }
+        });
+    }
+
     kick(reason = "", isAdmin = true): boolean{
         let message;
         if(isAdmin){
