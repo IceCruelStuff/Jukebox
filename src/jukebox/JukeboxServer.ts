@@ -200,7 +200,7 @@ export class JukeboxServer {
         this.start();
     }
 
-    batchPackets(players: Array<Player>, packets: Array<DataPacket>, forceSync: boolean = false, immediate: boolean = false): void{
+    batchPackets(players, packets, forceSync: boolean = false, immediate: boolean = false): void{
         let targets = [];
         players.forEach(player => {
             if(player.isConnected()) targets.push(this.players.getPlayerIdentifier(player));

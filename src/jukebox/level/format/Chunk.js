@@ -11,7 +11,7 @@ class Chunk {
         this.terrainPopulated = false;
         this.tiles = new Map();
         this.entities = new Map();
-        this.biomes = new Map();
+        this.biomes = [];
         this.heightMap = [];
         this.x = x;
         this.z = z;

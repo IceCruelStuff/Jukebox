@@ -20,6 +20,7 @@ import {StartGamePacket} from "./network/mcpe/protocol/StartGamePacket";
 import {LevelChunkPacket} from "./network/mcpe/protocol/LevelChunkPacket";
 import {ChunkRadiusUpdatedPacket} from "./network/mcpe/protocol/ChunkRadiusUpdatedPacket";
 import {TextPacket} from "./network/mcpe/protocol/TextPacket";
+import {Chunk} from "./level/format/Chunk";
 
 /**
  * Main class that handles networking, recovery, and packet sending to the server part
@@ -49,7 +50,7 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
 
     protected interface;
 
-    protected sessionAdapter; //TODO
+    protected sessionAdapter: PlayerSessionAdapter;
 
     protected ip: string;
     protected port: number;
@@ -562,19 +563,19 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         // }
     }
 
-    doFirstSpawn(){
+    doFirstSpawn(): void{
         this.spawned = true;
 
         this.sendPlayStatus(PlayStatusPacket.PLAYER_SPAWN);
     }
 
-    sendChunk(chunk){
+    sendChunk(chunk: Chunk){
         let pk = new LevelChunkPacket();
         pk.chunkX = chunk.getX();
         pk.chunkZ = chunk.getZ();
         pk.subChunkCount = chunk.getSubChunkSendCount();
         pk.cacheEnabled = false;
-        pk.extraPayload = "";
+        pk.extraPayload = chunk.toBinary();
         this.dataPacket(pk);
 
         if (this.spawned === false){
@@ -712,7 +713,7 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         return this.sendDataPacket(packet, needACK, false);
     }
 
-    sendDataPacket(packet, needACK = false, immediate = false){
+    sendDataPacket(packet: DataPacket, needACK = false, immediate = false){
         if(!this.isConnected()) return false;
 
         if(!this.loggedIn && !packet.canBeSentBeforeLogin()){
@@ -735,7 +736,7 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         return true;
     }
 
-    getSessionAdapter(){
+    getSessionAdapter(): PlayerSessionAdapter{
         return this.sessionAdapter;
     }
 

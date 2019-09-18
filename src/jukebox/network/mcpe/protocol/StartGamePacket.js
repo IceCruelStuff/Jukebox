@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DataPacket_1 = require("./DataPacket");
 const ProtocolInfo_1 = require("./ProtocolInfo");
 const GameRule_1 = require("../../../level/GameRule");
+const block_ids = require("../../../resources/runtimeid_table.json");
+const NetworkBinaryStream_1 = require("../NetworkBinaryStream");
 class StartGamePacket extends DataPacket_1.DataPacket {
     constructor() {
         super(...arguments);
@@ -134,7 +136,20 @@ class StartGamePacket extends DataPacket_1.DataPacket {
         this.putBool(this.isTrial);
         this.putLLong(this.currentTick);
         this.putVarInt(this.enchantmentSeed);
+        //this.append(this.blockPalette());
         this.putString(this.multiplayerCorrelationId);
+    }
+    blockPalette() {
+        let stream = new NetworkBinaryStream_1.NetworkBinaryStream();
+        stream.putUnsignedVarInt(Object.values(block_ids).length);
+        Object.values(block_ids).forEach(entry => {
+            if (entry.name !== null && entry.data !== null && entry.id !== null) {
+                stream.putString(entry.name);
+                stream.putLShort(entry.data);
+                stream.putLShort(entry.id);
+            }
+        });
+        return stream.getBuffer();
     }
     handle(session) {
         return session.handleStartGame(this);

@@ -18,7 +18,7 @@ export class Chunk {
 
     private entities = new Map();
 
-    private biomes = new Map();
+    private biomes: any[] = [];
 
     private heightMap = [];
     private hasChanged: boolean;
@@ -340,6 +340,4 @@ export class Chunk {
     static getHeightMapIndex(x, z){
         return (z << 4) | x;
     }
-    
-    
 }

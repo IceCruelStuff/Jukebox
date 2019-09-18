@@ -2,6 +2,8 @@ import {DataPacket} from "./DataPacket";
 import {ProtocolInfo} from "./ProtocolInfo";
 import {Vector3} from "../../../math/Vector3";
 import {GameRule} from "../../../level/GameRule";
+import * as block_ids from "../../../resources/runtimeid_table.json";
+import {NetworkBinaryStream} from "../NetworkBinaryStream";
 
 export class StartGamePacket extends DataPacket{
 
@@ -170,7 +172,24 @@ export class StartGamePacket extends DataPacket{
 
         this.putVarInt(this.enchantmentSeed);
 
+        //this.append(this.blockPalette());
+
         this.putString(this.multiplayerCorrelationId);
+    }
+
+    blockPalette(): Buffer{
+        let stream = new NetworkBinaryStream();
+
+        stream.putUnsignedVarInt(Object.values(block_ids).length);
+        Object.values(block_ids).forEach(entry => {
+            if (entry.name !== null && entry.data !== null && entry.id !== null) {
+                stream.putString(entry.name);
+                stream.putLShort(entry.data);
+                stream.putLShort(entry.id);
+            }
+        });
+
+        return stream.getBuffer();
     }
 
     handle(session): boolean {

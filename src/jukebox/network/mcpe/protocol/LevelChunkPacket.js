@@ -13,7 +13,6 @@ class LevelChunkPacket extends DataPacket_1.DataPacket {
         this.cacheEnabled = this.getBool();
         if (this.cacheEnabled) {
             for (let i = 0, count = this.getUnsignedVarInt(); i < count; ++i) {
-                // @ts-ignore
                 this.usedBlobHashes.push(this.getLLong());
             }
         }
