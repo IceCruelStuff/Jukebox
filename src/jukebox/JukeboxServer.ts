@@ -9,8 +9,7 @@ import {ResourcePackManager} from "./resourcepacks/ResourcePackManager";
 import {BatchPacket} from "./network/mcpe/protocol/BatchPacket";
 import {PlayerList} from "./utils/PlayerList";
 import {Player} from "./Player";
-// import {Packet} from "../raknet/protocol/Packet";
-import {DataPacket} from "./network/mcpe/protocol/DataPacket";
+import * as fs from "fs";
 
 export class JukeboxServer {
 
@@ -171,12 +170,14 @@ export class JukeboxServer {
         this.getLogger().info(localizationManager.getPhrase("starting-jukebox").replace("{{name}}", this.getName()).replace("{{version}}", this.getVersion()));
 
         this.getLogger().info(localizationManager.getPhrase("loading-properties"));
-        if (!SimpleFileSystem.fileExists(this.getDataPath() + "jukebox.json")) {
-            SimpleFileSystem.copy(this.paths["file"] + "jukebox/resources/jukebox.json", this.getDataPath() + "jukebox.json");
-        }
+        fs.appendFile(this.getDataPath() + "jukebox.json", fs.readFileSync(this.paths["file"] + "jukebox/resources/jukebox.json", "utf8"), function (err) {
+            console.log("Trying to save!");
+            if (err) throw err;
+            console.log('Saved!');
+        });
         this.config = new Config(this.getDataPath() + "jukebox.json", Config.JSON, {});
         // this.debuggingLevel = this.config.getNested("debugging.level", 0);
-        this.debuggingLevel = 0;
+        this.debuggingLevel = 2;
 
         this.getLogger().setDebugging(this.debuggingLevel);
 

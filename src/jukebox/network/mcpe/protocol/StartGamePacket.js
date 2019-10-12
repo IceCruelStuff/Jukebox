@@ -136,7 +136,7 @@ class StartGamePacket extends DataPacket_1.DataPacket {
         this.putBool(this.isTrial);
         this.putLLong(this.currentTick);
         this.putVarInt(this.enchantmentSeed);
-        //this.append(this.blockPalette());
+        // this.append(this.blockPalette());
         this.putString(this.multiplayerCorrelationId);
     }
     blockPalette() {

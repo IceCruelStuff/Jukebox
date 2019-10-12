@@ -6,6 +6,7 @@ const PacketPool_1 = require("./mcpe/protocol/PacketPool");
 const PlayerList_1 = require("../utils/PlayerList");
 const BatchPacket_1 = require("./mcpe/protocol/BatchPacket");
 const Player_1 = require("../Player");
+const Session_1 = require("../../raknet/server/Session");
 class RakNetAdapter {
     constructor(server) {
         this.server = server;
@@ -32,7 +33,9 @@ class RakNetAdapter {
             if (packet instanceof BatchPacket_1.BatchPacket) {
                 let session;
                 if ((session = this.raknet.getSessionManager().getSessionByIdentifier(identifier))) {
-                    session.queueConnectedPacketFromServer(packet, needACK, immediate);
+                    if (session instanceof Session_1.Session) {
+                        session.queueConnectedPacketFromServer(packet, needACK, immediate);
+                    }
                 }
                 return null;
             }

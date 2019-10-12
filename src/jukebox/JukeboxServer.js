@@ -8,6 +8,7 @@ const RakNetAdapter_1 = require("./network/RakNetAdapter");
 const ResourcePackManager_1 = require("./resourcepacks/ResourcePackManager");
 const BatchPacket_1 = require("./network/mcpe/protocol/BatchPacket");
 const PlayerList_1 = require("./utils/PlayerList");
+const fs = require("fs");
 class JukeboxServer {
     constructor(jukebox, localizationManager, logger, paths) {
         this.banByName = null;
@@ -81,12 +82,15 @@ class JukeboxServer {
         this.getLogger().info(localizationManager.getPhrase("language"));
         this.getLogger().info(localizationManager.getPhrase("starting-jukebox").replace("{{name}}", this.getName()).replace("{{version}}", this.getVersion()));
         this.getLogger().info(localizationManager.getPhrase("loading-properties"));
-        if (!SimpleFileSystem_1.SimpleFileSystem.fileExists(this.getDataPath() + "jukebox.json")) {
-            SimpleFileSystem_1.SimpleFileSystem.copy(this.paths["file"] + "jukebox/resources/jukebox.json", this.getDataPath() + "jukebox.json");
-        }
+        fs.appendFile(this.getDataPath() + "jukebox.json", fs.readFileSync(this.paths["file"] + "jukebox/resources/jukebox.json", "utf8"), function (err) {
+            console.log("Trying to save!");
+            if (err)
+                throw err;
+            console.log('Saved!');
+        });
         this.config = new Config_1.Config(this.getDataPath() + "jukebox.json", Config_1.Config.JSON, {});
         // this.debuggingLevel = this.config.getNested("debugging.level", 0);
-        this.debuggingLevel = 0;
+        this.debuggingLevel = 2;
         this.getLogger().setDebugging(this.debuggingLevel);
         this.operators = new Config_1.Config(this.getDataPath() + "ops.json", Config_1.Config.JSON, {});
         this.whitelist = new Config_1.Config(this.getDataPath() + "whitelist.json", Config_1.Config.JSON, {});

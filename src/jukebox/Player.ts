@@ -442,20 +442,15 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
     }*/
     //TODO: future update packet 
 
-    handleResourcePackClientResponse(packet){
-        console.log("Got a new resource pack response with status: " + packet.status);
-
+    handleResourcePackClientResponse(packet: ResourcePackClientResponsePacket){
         let pk, manager;
-        console.log("Status:", ResourcePackClientResponsePacket.STATUS(packet.status));
-
         switch(packet.status){
             case ResourcePackClientResponsePacket.STATUS_REFUSED:
+                //TODO: add lang strings for this
                 this.close("", "You must accept resource packs to join this server.", true);
                 break;
-
             case ResourcePackClientResponsePacket.STATUS_SEND_PACKS:
                 manager = this.server.getResourcePackManager();
-
                 packet.packIds.forEach(uuid => {
                     //dirty hack for mojang's dirty hack for versions
                     let slitPos = uuid.indexOf("_");
@@ -464,25 +459,23 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
                     }
 
                     let pack = manager.getPackById(uuid);
-
-                    // @ts-ignore
                     if (!(pack instanceof ResourcePack)){
                         this.close("", "Resource Pack is not on this server", true);
-                        console.log("Got a resource pack request for unknown pack with UUID " + uuid + ", available packs: " + manager.getPackIdList().join(", "));
+                        this.server.getLogger().debug("Got a resource pack request for unknown pack with UUID " + uuid + ", available packs: " + manager.getPackIdList().join(", "));
+
                         return false;
                     }
 
                     let pk = new ResourcePackDataInfoPacket();
                     pk.packId = pack.getPackId();
-                    pk.maxChunkSize = 1048576;
-                    pk.chunkCount = Math.ceil(pack.getPackSize() / pk.maxChunkSize);
+                    pk.maxChunkSize = 1048576; //1MB
+                    pk.chunkCount = Number(Math.ceil(pack.getPackSize() / pk.maxChunkSize));
                     pk.compressedPackSize = pack.getPackSize();
                     pk.sha256 = pack.getSha256();
                     this.dataPacket(pk);
                 });
 
                 break;
-
             case ResourcePackClientResponsePacket.STATUS_HAVE_ALL_PACKS:
                 pk = new ResourcePackStackPacket();
                 manager = this.server.getResourcePackManager();
@@ -490,18 +483,17 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
                 pk.mustAccept = manager.resourcePacksRequired();
                 this.dataPacket(pk);
                 break;
-
             case ResourcePackClientResponsePacket.STATUS_COMPLETED:
                 this.completeLoginSequence();
                 break;
-
             default:
                 return false;
         }
+
         return true;
     }
 
-    completeLoginSequence(){
+    protected completeLoginSequence(){
 
         // let pos = this.namedtag.getListTag("Pos").getAllValues();
         // this.usedChunks[Level.chunkHash(pos[0] >> 4, pos[2]) >> 4] = false;
@@ -575,7 +567,7 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         pk.chunkZ = chunk.getZ();
         pk.subChunkCount = chunk.getSubChunkSendCount();
         pk.cacheEnabled = false;
-        pk.extraPayload = chunk.toBinary();
+        pk.extraPayload = chunk.toBinary().toString();
         this.dataPacket(pk);
 
         if (this.spawned === false){
@@ -709,11 +701,11 @@ export class Player extends Human implements CommandSender, ChunkLoader, IPlayer
         return this.server;
     }
 
-    dataPacket(packet, needACK = false){
+    dataPacket(packet, needACK = false): boolean{
         return this.sendDataPacket(packet, needACK, false);
     }
 
-    sendDataPacket(packet: DataPacket, needACK = false, immediate = false){
+    sendDataPacket(packet: DataPacket, needACK = false, immediate = false): boolean{
         if(!this.isConnected()) return false;
 
         if(!this.loggedIn && !packet.canBeSentBeforeLogin()){

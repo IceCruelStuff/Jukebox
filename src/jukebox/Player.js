@@ -351,11 +351,10 @@ class Player extends Human_1.Human {
     }*/
     //TODO: future update packet 
     handleResourcePackClientResponse(packet) {
-        console.log("Got a new resource pack response with status: " + packet.status);
         let pk, manager;
-        console.log("Status:", ResourcePackClientResponsePacket_1.ResourcePackClientResponsePacket.STATUS(packet.status));
         switch (packet.status) {
             case ResourcePackClientResponsePacket_1.ResourcePackClientResponsePacket.STATUS_REFUSED:
+                //TODO: add lang strings for this
                 this.close("", "You must accept resource packs to join this server.", true);
                 break;
             case ResourcePackClientResponsePacket_1.ResourcePackClientResponsePacket.STATUS_SEND_PACKS:
@@ -367,16 +366,15 @@ class Player extends Human_1.Human {
                         uuid = uuid.slice(uuid, 0, slitPos);
                     }
                     let pack = manager.getPackById(uuid);
-                    // @ts-ignore
                     if (!(pack instanceof ResourcePack)) {
                         this.close("", "Resource Pack is not on this server", true);
-                        console.log("Got a resource pack request for unknown pack with UUID " + uuid + ", available packs: " + manager.getPackIdList().join(", "));
+                        this.server.getLogger().debug("Got a resource pack request for unknown pack with UUID " + uuid + ", available packs: " + manager.getPackIdList().join(", "));
                         return false;
                     }
                     let pk = new ResourcePackDataInfoPacket_1.ResourcePackDataInfoPacket();
                     pk.packId = pack.getPackId();
-                    pk.maxChunkSize = 1048576;
-                    pk.chunkCount = Math.ceil(pack.getPackSize() / pk.maxChunkSize);
+                    pk.maxChunkSize = 1048576; //1MB
+                    pk.chunkCount = Number(Math.ceil(pack.getPackSize() / pk.maxChunkSize));
                     pk.compressedPackSize = pack.getPackSize();
                     pk.sha256 = pack.getSha256();
                     this.dataPacket(pk);
@@ -456,7 +454,7 @@ class Player extends Human_1.Human {
         pk.chunkZ = chunk.getZ();
         pk.subChunkCount = chunk.getSubChunkSendCount();
         pk.cacheEnabled = false;
-        pk.extraPayload = chunk.toBinary();
+        pk.extraPayload = chunk.toBinary().toString();
         this.dataPacket(pk);
         if (this.spawned === false) {
             this.doFirstSpawn();

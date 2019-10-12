@@ -172,7 +172,7 @@ export class StartGamePacket extends DataPacket{
 
         this.putVarInt(this.enchantmentSeed);
 
-        //this.append(this.blockPalette());
+        // this.append(this.blockPalette());
 
         this.putString(this.multiplayerCorrelationId);
     }

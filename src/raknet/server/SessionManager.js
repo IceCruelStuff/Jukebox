@@ -75,7 +75,9 @@ class SessionManager {
     tick() {
         let time = Date.now();
         for (let [, session] of this.sessions) {
-            session.update_func(time);
+            if (session instanceof Session_1.Session) {
+                session.update(time);
+            }
         }
         if ((this.ticks % SessionManager.RAKNET_TPS) === 0) {
             /*let diff = Math.max(0.005, time - this.lastMeasure);

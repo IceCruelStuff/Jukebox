@@ -56,7 +56,7 @@ class ResourcePackManager {
                 server.getLogger().logError(e);
             }
         });
-        server.getLogger().debug("Successfully loaded " + this.resourcePacks.length + " resource packs");
+        server.getLogger().info("Successfully loaded " + this.resourcePacks.length + " resource packs");
     }
     resourcePacksRequired() {
         return this.forceResources;

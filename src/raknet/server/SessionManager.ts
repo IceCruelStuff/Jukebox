@@ -118,7 +118,9 @@ export class SessionManager {
         let time = Date.now();
 
         for(let [, session] of this.sessions){
-            session.update_func(time);
+            if (session instanceof Session){
+                session.update(time);
+            }
         }
 
         if((this.ticks % SessionManager.RAKNET_TPS) === 0){

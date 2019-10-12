@@ -115,7 +115,7 @@ export class Session{
         this.sessionManager.getLogger().debug(this + " is now connected.");
     }
 
-    update_func(time): void{
+    update(time): void{
 
         if(!this.isActive && (this.lastUpdate + 10000) < time){
             this.disconnect("timeout");

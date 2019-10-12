@@ -5,6 +5,7 @@ import {PacketPool} from "./mcpe/protocol/PacketPool";
 import {PlayerList} from "../utils/PlayerList";
 import {BatchPacket} from "./mcpe/protocol/BatchPacket";
 import {Player} from "../Player";
+import {Session} from "../../raknet/server/Session";
 
 export class RakNetAdapter {
 
@@ -42,7 +43,9 @@ export class RakNetAdapter {
             if(packet instanceof BatchPacket){
                 let session;
                 if((session = this.raknet.getSessionManager().getSessionByIdentifier(identifier))){
-                    session.queueConnectedPacketFromServer(packet, needACK, immediate);
+                    if (session instanceof Session) {
+                        session.queueConnectedPacketFromServer(packet, needACK, immediate);
+                    }
                 }
                 return null;
             }else{

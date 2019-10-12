@@ -1,1 +1,22 @@
-true
+true{
+    "server": {
+        "language": "en",
+        "motd": "A Jukebox Beta Server",
+        "ip": "0.0.0.0",
+        "port": 19132,
+        "whitelist": false,
+        "max-players": 20,
+        "gamemode": 1,
+        "online-mode": false,
+        "level": {
+            "type": "flat"
+        }
+    },
+    "network": {
+        "batch-threshold": 256,
+        "compression-level": 7
+    },
+    "debugging": {
+        "level": 0
+    }
+}

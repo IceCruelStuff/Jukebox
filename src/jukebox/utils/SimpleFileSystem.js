@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const path = require("path");
 class SimpleFileSystem {
+    //TODO: Remade FS functions to get work right
     static fileExists(f) {
         return fs.existsSync(f);
     }
@@ -54,6 +55,12 @@ class SimpleFileSystem {
     static walkDir(d) {
         d = path.normalize(d + path.sep);
         return fs.readdirSync(d).map(p => { return d + p; });
+    }
+    static createIfNotExists(p, c) {
+        fs.appendFile(p, c, "utf8", function (err) {
+            if (err)
+                throw err;
+        });
     }
 }
 exports.SimpleFileSystem = SimpleFileSystem;

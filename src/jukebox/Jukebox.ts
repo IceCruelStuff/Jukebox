@@ -4,6 +4,7 @@ import {Config} from "./utils/Config";
 import {LocalizationManager} from "./localization/LocalizationManager";
 import {TRAVIS_BUILD} from "./utils/methods/Globals";
 import * as Path from "path";
+import * as fs from "fs";
 
 export const NAME = "Jukebox";
 export const VERSION = "1.12.0";
