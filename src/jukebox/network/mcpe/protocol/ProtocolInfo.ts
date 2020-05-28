@@ -3,11 +3,11 @@ export const ProtocolInfo = {
     /**
      * Actual Minecraft: PE protocol version
      */
-    PROTOCOL: 361,
+    PROTOCOL: 388,
     /**
      * Version number sent to clients in ping responses.
      */
-    VERSION: "1.12.0",
+    VERSION: "1.13.0",
 
     LOGIN_PACKET: 0x01,
     PLAY_STATUS_PACKET: 0x02,
